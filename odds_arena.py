@@ -42,9 +42,16 @@ def eliminatorias(liga_eliminatoria):
     if len(lista_copa_eliminatoria) > 0:
        return True, lista_copa_eliminatoria
 
-    
     return False, 0
-    
+
+def limpar_sujeiras_webscrapping(lista_liga, liga_pais):
+    for liga,pais in zip(lista_liga,liga_pais):
+        nome_liga = str(liga.get_text())
+        if '' == nome_liga:
+            lista_liga.remove(liga)
+            liga_pais.remove(pais)
+    return lista_liga, liga_pais
+
 site2 = driver.find_elements(By.CLASS_NAME, 'home')
 
 for i in site2:
@@ -67,7 +74,9 @@ for i in site2:
         print(err)
     pais = soup.find_all(attrs={'class':'section-title'})
     liga2 = soup.find_all(attrs={'class':'section-title__info'})
-    
+   
+    liga2 , pais = limpar_sujeiras_webscrapping(liga2,pais)
+
     for i,a,c in zip(liga2,jogo,pais):
         nome_liga = str(i.get_text())
         nome_pais = str(c.get_text())
@@ -91,7 +100,7 @@ for i in site2:
 
         for a,d in zip(evento,hora_dia_evento):
             jogos_hora[a]= d.get_text()
-
+        
 site = driver.find_elements(By.CLASS_NAME, 'eventos-list')
 
 cpmundo = False
