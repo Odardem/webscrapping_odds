@@ -9,13 +9,22 @@ from datetime import datetime
 from selenium.webdriver.common.by import By
 from ligas_mercados import *
 from querys import *
+import shutil
 
 banco.deletar_tabela('EventoOddArena')
 
 banco.inserir_db(CREATE_TABLE_EVENTO_ODD_ARENA)
 #banco.inserir_db(create_table_history)
 
-service = FirefoxService(executable_path=GeckoDriverManager().install())
+try:
+    service = FirefoxService(executable_path=GeckoDriverManager().install())
+except:
+    try:
+        shutil.rmtree('/home/suportelinux/.wdm/drivers/')
+        print('Removido com suceso')
+    except Exception as err:
+        print(err)
+#service = FirefoxService(executable_path=GeckoDriverManager().install())
 #service = FirefoxService(executable_path=GeckoDriverManager().install())
 url = r'https://www.arenaesportiva.live/esportes/1'
 
